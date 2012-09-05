@@ -345,7 +345,7 @@ $.widget("ui.selectmenu", {
 					.bind('mouseover.selectmenu focus.selectmenu', function(e) {
 						// no hover if diabled
 						if (!$(e.currentTarget).hasClass(self.namespace + '-state-disabled') && !$(e.currentTarget).parent("ul").parent("li").hasClass(self.namespace + '-state-disabled')) {
-							self.hover(e, $(this).data('index'));
+							self._hover(e, $(this).data('index'));
 							self._selectedOptionLi().addClass(activeClass);
 							self._focusedOptionLi().removeClass(self.widgetBaseClass + '-item-focus ui-state-hover');
 							$(this).removeClass('ui-state-active').addClass(self.widgetBaseClass + '-item-focus ui-state-hover');
@@ -355,7 +355,7 @@ $.widget("ui.selectmenu", {
 						if ($(this).is(self._selectedOptionLi().selector)) {
 							$(this).addClass(activeClass);
 						}
-						self.blur(e, $(this).data('index'));
+						self._blur(e, $(this).data('index'));
 						$(this).removeClass(self.widgetBaseClass + '-item-focus ui-state-hover');
 					});
 
@@ -606,12 +606,14 @@ $.widget("ui.selectmenu", {
 		this._trigger("change", event, this._uiHash());
 	},
 
-	hover: function (event, hoverIndex) {
-		event.optionValue = this.element[0].options[hoverIndex].value;
+	_hover: function (event, hoverIndex) {
+		if (this.element[0].options[hoverIndex] != null) {
+			event.optionValue = this.element[0].options[hoverIndex].value;
+		}
 		this._trigger("hover", event, this._uiHash());
 	},
 
-	blur: function (event, hoverIndex) {
+	_blur: function (event, hoverIndex) {
 		if (this.element[0].options[hoverIndex] != null) {
 			event.optionValue = this.element[0].options[hoverIndex].value;
 		}
